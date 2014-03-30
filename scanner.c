@@ -1,9 +1,22 @@
 #include "scanner.h"
 
-void LinkedList_insert(token* &t,token * temp);
-bool is_reserved_word(const char* word);
+void LinkedList_insert(token* t,token * temp);
+short is_reserved_word(const char* word);
 
-void tokenize(FILE *fp,token* &t){
+
+const char* RESERVEDWORDS[]={
+	"if",
+	"then",
+	"else",
+	"end",
+	"repeat",
+	"until",
+	"read",
+	"write",
+	"int"
+};
+
+void tokenize(FILE *fp,token* t){
 
 	char rc;
 
@@ -39,7 +52,7 @@ void tokenize(FILE *fp,token* &t){
 				rc = fgetc(fp);
 			} while(INID && i<14);
 			temp->value[i]='\0';
-			is_reserved_word(temp->value))?temp->type=RESERVEDWORD:temp->type=IDENTIFIER;
+			temp->type= is_reserved_word(temp->value)?RESERVEDWORD:IDENTIFIER;
 			LinkedList_insert(t,temp);
 		}
 
@@ -63,7 +76,7 @@ void tokenize(FILE *fp,token* &t){
 	}
 }
 
-void LinkedList_insert(token* &t,token * temp){
+void LinkedList_insert(token* t,token* temp){
 	if(t==NULL){
 		t = temp;
 		return;
@@ -75,7 +88,7 @@ void LinkedList_insert(token* &t,token * temp){
 	current->next = temp;
 }
 
-bool is_reserved_word(const char* word){
+short is_reserved_word(const char* word){
 	int i=0;
 	for(;i<sizeof(RESERVEDWORDS)/sizeof(char*);i++){
 		if(!strcmp(RESERVEDWORDS[i],word)){

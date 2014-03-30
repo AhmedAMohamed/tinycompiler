@@ -1,3 +1,6 @@
+#ifndef SCANNER_H
+#define SCANNER_H
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -11,20 +14,6 @@
 					rc=='='||rc=='('||rc==')'||rc=='<'|| \
 					rc==';'||rc==':'
 
-
-
-const char* RESERVEDWORDS[]={
-	"if",
-	"then",
-	"else",
-	"end",
-	"repeat",
-	"until",
-	"read",
-	"write",
-	"int"
-};
-
 typedef enum {
 SPECIALCHAR,
 IDENTIFIER,
@@ -33,10 +22,13 @@ RESERVEDWORD
 } token_type;
 
 typedef struct token{
-	token* next;
+	struct token* next;
 	char* value;
 	token_type type;
 } token;
 
-void tokenize(FILE *fp,token* &t);
+
+void tokenize(FILE *fp,token* t);
 char* type_name(token_type t);
+
+#endif/*SCANNER_H*/
