@@ -27,8 +27,9 @@ typedef struct token{
 	token_type type;
 } token;
 
+token *head;
 
-void tokenize(FILE *fp,token* t);
+void tokenize(FILE *fp);
 char* type_name(token_type t);
 
 #endif/*SCANNER_H*/
