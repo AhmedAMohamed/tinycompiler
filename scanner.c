@@ -38,6 +38,7 @@ void tokenize(FILE *fp){
 				temp->value[i++]=rc;
 				rc = fgetc(fp);
 			} while(INNUM && i<9);
+			ungetc (rc,fp);
 			temp->value[i]='\0';
 			LinkedList_insert(temp);
 		}
@@ -51,6 +52,7 @@ void tokenize(FILE *fp){
 				temp->value[i++]=rc;
 				rc = fgetc(fp);
 			} while(INID && i<14);
+			ungetc (rc,fp);
 			temp->value[i]='\0';
 			temp->type= is_reserved_word(temp->value)?RESERVEDWORD:IDENTIFIER;
 			LinkedList_insert(temp);
@@ -70,6 +72,7 @@ void tokenize(FILE *fp){
 			do {
 				rc = fgetc(fp);
 			} while(!(rc=='}'||ENDOFFILE));
+			ungetc (rc,fp);
 			continue;
 		}
 
