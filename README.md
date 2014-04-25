@@ -1,12 +1,13 @@
 tinyScanner
 ===========
 
-Tiny language Compiler
+
+###Tiny language Compiler
 
 This is a college project to make a complete Tiny Language compiler
 
-To build: 
+###To build: 
 
-  ./configure
-  make
-  sudo make install
+* `$ ./configure`
+* `$ make`
+* `$ sudo make install`

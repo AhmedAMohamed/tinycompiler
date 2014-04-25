@@ -16,6 +16,9 @@
 
 typedef enum {
 SPECIALCHAR,
+ASSIG_OP,
+ADD_OP.
+SUB_OP,
 IDENTIFIER,
 NUMBER,
 RESERVEDWORD
@@ -31,5 +34,7 @@ token *head;
 
 void tokenize(FILE *fp);
 char* type_name(token_type t);
+token * get_next_token();
+void set_next_token(token * t);
 
 #endif/*SCANNER_H*/

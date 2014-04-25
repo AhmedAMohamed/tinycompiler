@@ -3,6 +3,17 @@
 void LinkedList_insert(token * temp);
 short is_reserved_word(const char* word);
 
+token *next_token;
+
+token * get_next_token(){
+	token * temp = next_token;
+	next_token = next_token->next;
+	return temp;
+}
+
+void set_next_token(token * t){
+	next_token = t;
+}
 
 const char* RESERVEDWORDS[]={
 	"if",
@@ -15,6 +26,11 @@ const char* RESERVEDWORDS[]={
 	"write",
 	"int"
 };
+
+token_type get_special_char(const char* ch){
+	if(!strcmp(ch,"=")) return ASSIG_OP;
+	return IDENTIFIER;
+}
 
 void tokenize(FILE *fp){
 
@@ -63,7 +79,7 @@ void tokenize(FILE *fp){
 			temp->value = (char*)malloc(2*sizeof(char));
 			temp->value[0] = rc;
 			temp->value[1] = '\0';
-			temp->type=SPECIALCHAR;
+			temp->type=get_special_char(temp->value);
 			temp->next=NULL;
 			LinkedList_insert(temp);
 		}
@@ -77,6 +93,7 @@ void tokenize(FILE *fp){
 		}
 
 	}
+	next_token = head;
 }
 
 void LinkedList_insert(token* temp){
@@ -102,13 +119,11 @@ short is_reserved_word(const char* word){
 }
 
 char* type_name(token_type t){
-	char *ret =(char*)malloc(20*sizeof(char));
-	ret[19]='\0';
 	switch(t){
-		case SPECIALCHAR:	strcpy(ret,"special character"); break;
-		case IDENTIFIER:	strcpy(ret,"Identifier"); break;
-		case NUMBER:		strcpy(ret,"Number"); break;
-		case RESERVEDWORD:	strcpy(ret,"Reserved word"); break;
+		case SPECIALCHAR:	return "special character";
+		case IDENTIFIER:	return "Identifier";
+		case ASSIG_OP:		return "Assign Operat";
+		case NUMBER:		return "Number";
+		case RESERVEDWORD:	return "Reserved word";
 	}
-	return ret;
 }

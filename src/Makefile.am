@@ -2,5 +2,5 @@
 CFLAGS = --pedantic -Wall -O2
 LDFLAGS =
 
-bin_PROGRAMS = compiler
-compiler_SOURCES = main.c scanner.c scanner.h
+bin_PROGRAMS = tcc
+tcc_SOURCES = main.c scanner.c scanner.h parser.c parser.h
