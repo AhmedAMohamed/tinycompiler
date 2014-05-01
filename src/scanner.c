@@ -29,6 +29,7 @@ const char* RESERVEDWORDS[]={
 
 token_type get_special_char(const char* ch){
 	if(!strcmp(ch,"=")) return ASSIG_OP;
+	if(!strcmp(ch,";")) return SPECIALCHAR;
 	return IDENTIFIER;
 }
 
@@ -93,6 +94,11 @@ void tokenize(FILE *fp){
 		}
 
 	}
+	token *temp =(token*)malloc(sizeof(token));
+	temp->value = "eof";
+	temp->type= _EOF;
+	temp->next=NULL;
+	LinkedList_insert(temp);
 	next_token = head;
 }
 
@@ -125,5 +131,6 @@ char* type_name(token_type t){
 		case ASSIG_OP:		return "Assign Operat";
 		case NUMBER:		return "Number";
 		case RESERVEDWORD:	return "Reserved word";
+		default:		return "Unknown";
 	}
 }

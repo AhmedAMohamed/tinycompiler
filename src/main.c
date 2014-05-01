@@ -26,8 +26,9 @@ int main(int argc,char* argv[]){
 	printf("parser is starting\n");
 	if(program()){
 		printf("syntax ok\n");
+		printf("Compilation finished\n");
 	}else{
 		printf("syntax error\n");
+		printf("Compilation terminated\n");
 	}
-	printf("Compilation terminated\n");
 }

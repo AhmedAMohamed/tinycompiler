@@ -2,8 +2,43 @@
 
 #include "scanner.h"
 
+short stmt_sequence();
+short match(const char* ch);
+short identifier();
+
 short exp (){
-	return 1;
+	return 0;
+}
+
+void printnexttoken(){
+	token* temp = get_next_token();
+	printf("## Next Token is : %s\n",temp->value);
+	set_next_token(temp);
+}
+
+void printError(const char* instead){
+	token* temp = get_next_token();
+	printf("## Syntax error in this token : %s\n",temp->value);
+	printf("! expected %s instead\n",instead);
+	set_next_token(temp);
+}
+
+short comparison_op(){
+	if (match("<") || match(">"))
+		return 1;
+	return 0;
+}
+
+short mul_op(){
+	if (match("*") || match("/"))
+		return 1;
+	return 0;
+}
+
+short add_op(){
+	if (match("+") || match("-"))
+		return 1;
+	return 0;
 }
 
 short match(const char* ch){
@@ -15,9 +50,8 @@ short match(const char* ch){
 	return 0;
 }
 
-short factor(){
+short number(){
 	token* temp = get_next_token();
-	printf("factor : %s\n",temp->value);
 	if(temp->type==NUMBER){
 		return 1;
 	}
@@ -25,10 +59,20 @@ short factor(){
 	return 0;
 }
 
-short add_op(){
+short factor(){
+	if (match("(") && exp() && match(")"))
+		return 1;
+	else if(number())
+		return 1;
+	else if(identifier())
+		return 1;
+	return 0;
+}
+
+short end_of_file(){
 	token* temp = get_next_token();
-	printf("add_op : %s\n",temp->value);
-	if(temp->type==ADD_OP || temp->type==SUB_OP){
+	if(temp->type == _EOF){
+		set_next_token(temp);		
 		return 1;
 	}
 	set_next_token(temp);
@@ -37,7 +81,6 @@ short add_op(){
 
 short assig_op(){
 	token* temp = get_next_token();
-	printf("assig_op : %s\n",temp->value);
 	if(temp->type==ASSIG_OP){
 		return 1;
 	}
@@ -52,25 +95,58 @@ short assign_stmt(){
 	return 0;
 }
 
-short statement(){
-	if(assign_stmt())
+short if_stmt(){
+	return 0;
+}
+
+short repeat_stmt(){
+	if(match("repeat") && factor() && match("until") && factor()){
 		return 1;
+	}
+	return 0;
+}
+
+short identifier(){
+	token* temp = get_next_token();
+	if(temp->type==IDENTIFIER){
+		return 1;
+	}
+	set_next_token(temp);
+	return 0;
+}
+
+short read_stmt(){
+	if(match("read") && identifier()){
+		return 1;
+	}
+	return 0;
+}
+
+short write_stmt(){
+	if(match("write") && identifier()){
+		return 1;
+	}
+	return 0;
+}
+
+short statement(){
+	if(assign_stmt()||repeat_stmt()||if_stmt()||read_stmt()||write_stmt()){
+		return 1;
+	}
+	else if(end_of_file()){
+		return 0;
+	}
+	printError("statment");
 	return 0;
 }
 
 short stmt_sequence(){
-	token* temp = get_next_token();
-	printf("stmt_seq : %s\n",temp->value);
-	if(match(";")){
-		temp = get_next_token();
+	while(statement()){
+		if(!match(";"))// the char is not a ;
+			break;
 	}
-	else{
-		return 0;	
-	}
-	if(statement()){
+	if(end_of_file())
 		return 1;
-	}
-	set_next_token(temp);
 	return 0;
 }
 

@@ -17,10 +17,11 @@
 typedef enum {
 SPECIALCHAR,
 ASSIG_OP,
-ADD_OP.
+ADD_OP,
 SUB_OP,
 IDENTIFIER,
 NUMBER,
+_EOF,
 RESERVEDWORD
 } token_type;
 
