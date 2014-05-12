@@ -3,5 +3,7 @@ repeat
 a
 until
 7;
-2 = 5;
-4 = 1;
+read a;
+write b;
+b = 5;
+y = 12;

@@ -5,9 +5,33 @@
 short stmt_sequence();
 short match(const char* ch);
 short identifier();
+short comparison_op();
+short factor();
+short add_op();
+short mul_op();
+
+short term(){
+	while(factor()){
+		if(!mul_op())
+			return 0;
+	}
+	return 1;
+}
+
+short simple_exp(){
+	while(term()){
+		if(!add_op())
+			return 0;
+	}
+	return 1;
+}
 
 short exp (){
-	return 0;
+	while(simple_exp()){
+		if(!comparison_op() || !simple_exp())
+				return 0;
+	}
+	return 1;
 }
 
 void printnexttoken(){
